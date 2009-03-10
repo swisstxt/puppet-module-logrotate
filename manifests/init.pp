@@ -11,7 +11,7 @@
 # the Free Software Foundation.
 #
 
-# modules_dir { "logrotate": }
+import 'defines.pp'
 
 class logrotate {
     include logrotate::base
