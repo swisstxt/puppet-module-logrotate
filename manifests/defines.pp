@@ -2,7 +2,7 @@
 
 define logrotate::snippet($source = 'absent' ){
 
-    if $source != 'absent' {
+    if $source == 'absent' {
         $real_source = [ "puppet://$server/files/logrotate/snippets/${fqdn}/${name}",
                          "puppet://$server/files/logrotate/snippets/${domain}/${name}",
                          "puppet://$server/files/logrotate/snippets/${name}" ]
