@@ -2,8 +2,9 @@
 # logrotate module
 #
 # Copyright 2008, Puzzle ITC GmbH
+# Copyright 2010, Atizo AG
 # Marcel Härry haerry+puppet(at)puzzle.ch
-# Simon Josi josi+puppet(at)puzzle.ch
+# Simon Josi simon.josi+puppet(at)atizo.com
 #
 # This program is free software; you can redistribute 
 # it and/or modify it under the terms of the GNU 
@@ -11,24 +12,9 @@
 # the Free Software Foundation.
 #
 
-import 'defines.pp'
-
-class logrotate {
-    include logrotate::base
+class logrotate($alternative_tmp = false) {
+  include logrotate::base
+  if $alternative_tmp {
+    include logrotate::alternative_tmp
+  }
 }
-
-class logrotate::base {
-    package{logrotate:
-        ensure => present,
-    }
-
-    file{"/etc/cron.daily/logrotate":
-        source => [ "puppet://$server/logrotate/logrotate.cron.daily.${operatingsystem}.${lsbdistrelease}",
-                    "puppet://$server/logrotate/logrotate.cron.daily.${operatingsystem}",
-                    "puppet://$server/logrotate/logrotate.cron.daily" ],
-        require => Package[logrotate],
-        owner => root, group => 0, mode => 0755;
-    }
-}
-
-
