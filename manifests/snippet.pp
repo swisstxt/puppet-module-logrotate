@@ -1,17 +1,22 @@
 define logrotate::snippet(
-  $source = 'absent'
+  $site_module = 'site_logrotate',
+  $template = false
 ) {
-  if $source == 'absent' {
-    $real_source = [
-      "puppet://$server/modules/site-logrotate/snippets/$fqdn/$name",
-      "puppet://$server/modules/site-logrotate/snippets/$domain/$name",
-      "puppet://$server/modules/site-logrotate/snippets/$name",
-    ]
-  } else {
-    $real_source = $source
-  }   
   file{"/etc/logrotate.d/$name":
-    source => $real_source,
-    owner => root, group => 0, mode => 0644;
+    require => Package['logrotate'],
+    owner => root, group => root, mode => 0644;
+  }
+  if $template {
+		File["/etc/logrotate.d/$name"]{
+			content => template("$site_module/$name"),
+		}
+  } else {
+		File["/etc/logrotate.d/$name"]{
+			source => [
+				"puppet://modules/$site_module/$fqdn/$name",
+				"puppet://modules/$site_module/$name",
+				"puppet://modules/logrotate/$name",
+			],
+		}
   }
 }
