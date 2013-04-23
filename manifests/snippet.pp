@@ -13,9 +13,9 @@ define logrotate::snippet(
   } else {
 		File["/etc/logrotate.d/$name"]{
 			source => [
-				"puppet://modules/$site_module/$fqdn/$name",
-				"puppet://modules/$site_module/$name",
-				"puppet://modules/logrotate/$name",
+				"puppet:///modules/$site_module/$fqdn/$name",
+				"puppet:///modules/$site_module/$name",
+				"puppet:///modules/logrotate/$name",
 			],
 		}
   }
